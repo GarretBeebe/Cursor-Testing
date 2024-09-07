@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Latin Translator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        textarea { width: 100%; height: 100px; }
+        button { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Pig Latin Translator</h1>
+    <textarea id="input" placeholder="Enter English phrase here"></textarea>
+    <button onclick="pigTranslate()">Translate</button>
+    <h2>Result:</h2>
+    <p id="result"></p>
+
+    <script>
+        async function pigTranslate() {
+            const input = document.getElementById('input').value;
+            const response = await fetch('/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phrase: input })
+            });
+            const data = await response.json();
+            document.getElementById('result').textContent = data.translated;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  pig-latin-app:
+    build: .
+    ports:
+      - "6000:6000"
+    volumes:
+      - ./main.py:/app/main.py
+    environment:
+      - FLASK_ENV=development
