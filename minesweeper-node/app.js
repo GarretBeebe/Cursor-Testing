@@ -8,9 +8,9 @@ app.use(express.static('public'));
 
 class Minesweeper {
   constructor(rows, cols, mines) {
-    this.rows = rows;
-    this.cols = cols;
-    this.mines = mines;
+    this.rows = Number(rows);
+    this.cols = Number(cols);
+    this.mines = Number(mines);
     this.board = this.createBoard();
     this.placeMines();
   }
@@ -24,6 +24,8 @@ class Minesweeper {
     while (minesPlaced < this.mines) {
       const row = Math.floor(Math.random() * this.rows);
       const col = Math.floor(Math.random() * this.cols);
+      console.log(row, col);
+      console.log(this.board[row][col]);
       if (this.board[row][col] !== -1) {
         this.board[row][col] = -1;
         minesPlaced++;
