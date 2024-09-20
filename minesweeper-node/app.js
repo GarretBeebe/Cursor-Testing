@@ -24,8 +24,6 @@ class Minesweeper {
     while (minesPlaced < this.mines) {
       const row = Math.floor(Math.random() * this.rows);
       const col = Math.floor(Math.random() * this.cols);
-      console.log(row, col);
-      console.log(this.board[row][col]);
       if (this.board[row][col] !== -1) {
         this.board[row][col] = -1;
         minesPlaced++;
