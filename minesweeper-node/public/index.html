@@ -18,6 +18,9 @@
             justify-content: center;
             cursor: pointer;
         }
+        .flagged {
+            background-color: yellow;
+        }
     </style>
 </head>
 <body>
@@ -63,7 +66,14 @@
                     const cellElement = document.createElement('div');
                     cellElement.className = 'cell';
                     cellElement.onclick = () => revealCell(rowIndex, colIndex);
+                    cellElement.oncontextmenu = (e) => {
+                        e.preventDefault();
+                        flagCell(rowIndex, colIndex);
+                    };
                     cellElement.textContent = cell !== null ? (cell === -1 ? '💣' : cell || '') : '';
+                    if (cell === 'F') {
+                        cellElement.classList.add('flagged');
+                    }
                     board.appendChild(cellElement);
                 });
             });
@@ -87,6 +97,26 @@
                 renderBoard();
             }
         }
+
+        async function flagCell(row, col) {
+        try {
+            const response = await fetch('/flag', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ row, col })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            boardState[row][col] = result.flagged ? 'F' : null;
+            renderBoard();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
         newGame();
     </script>

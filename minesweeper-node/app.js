@@ -12,6 +12,7 @@ class Minesweeper {
     this.cols = Number(cols);
     this.mines = Number(mines);
     this.board = this.createBoard();
+    this.flags = this.createBoard();
     this.placeMines();
   }
 
@@ -62,6 +63,11 @@ class Minesweeper {
     }
     return { gameOver: false, value: this.board[row][col] };
   }
+
+  flagCell(row, col) {
+    this.flags[row][col] = !this.flags[row][col];
+    return { flagged: this.flags[row][col] };
+  }
 }
 
 let game;
@@ -75,6 +81,12 @@ app.post('/new-game', (req, res) => {
 app.post('/reveal', (req, res) => {
   const { row, col } = req.body;
   const result = game.revealCell(row, col);
+  res.json(result);
+});
+
+app.post('/flag', (req, res) => {
+  const { row, col } = req.body;
+  const result = game.flagCell(row, col);
   res.json(result);
 });
 
